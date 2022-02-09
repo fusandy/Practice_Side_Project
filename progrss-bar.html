@@ -12,6 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0 auto;
+            background: #000;
         }
         .progress{
             height: 30px;
@@ -27,40 +28,53 @@
             border-radius: 20px;
             background:linear-gradient(to left, #F2709C, #FF9472);
             color: #fff;
-            font-family:Georgia, 'Times New Roman', Times, serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 3px 3px -5px #F2709C, 0 2px 5px #FF9472;
-            transition: 5s ;
+            box-shadow: 2px 0px 3px -5px #F2709C, 2px 0px 5px #FF9472;
+        }
+        h5{
+            /* opacity: 0; */
+        }
+        p{
+            color: #d8d8d8;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="progress">
-        <div class="progress-done" data-done="100">
-            <p>Completed</p> &nbsp;&nbsp;
-            <h5></h5>
+    <div class="wrap">
+        <p>Completed</p>
+        <div class="progress">
+            <div class="progress-done">
+                <h5></h5>
+            </div>
         </div>
     </div>
-
     <script>
-    const progress = document.querySelector('.progress-done');
+    
     
     let counter = 0;
     let c = 0;
     let run = setInterval(function(){
         const h5 = document.querySelector('h5');
-        h5.innerHTML= c+'%';
-        progress.style.width = progress.getAttribute('data-done') + '%';
+        const progress = document.querySelector('.progress-done');
+
+        progress.style.width = c +'%';
+        console.log(progress.style.width);
         progress.style.opacity = 1;
+        
+        if(c>=10){
+            h5.innerHTML = c+'%';
+        }
+        
         counter++;
         c++;
 
         if(counter===101){
             clearInterval(run);
         }
-    }, 50);
+    }, 30);
 
     </script>
 </body>
