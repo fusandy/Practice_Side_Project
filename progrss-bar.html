@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>progress bar</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0 auto;
+        }
+        .progress{
+            height: 30px;
+            width: 300px;
+            border-radius: 20px;
+            background-color: #d8d8d8;
+        }
+        .progress-done{
+            height: 100%;
+            /* 初始化歸零 */
+            width: 0px;  
+            opacity: 0;
+            border-radius: 20px;
+            background:linear-gradient(to left, #F2709C, #FF9472);
+            color: #fff;
+            font-family:Georgia, 'Times New Roman', Times, serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 3px -5px #F2709C, 0 2px 5px #FF9472;
+            transition: 4.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress">
+        <div class="progress-done" data-done="100">
+            <p>Completed</p> &nbsp;&nbsp;
+            <h5></h5>
+        </div>
+    </div>
+
+    <script src="./js/jquery-3.6.0.js"></script>
+    <script>
+    const progress = document.querySelector('.progress-done');
+    
+    let counter = 0;
+    let c = 0;
+    let run = setInterval(function(){
+        const h5 = document.querySelector('h5');
+        h5.innerHTML= c+'%';
+        progress.style.width = progress.getAttribute('data-done') + '%';
+        progress.style.opacity = 1;
+        counter++;
+        c++;
+
+        if(counter===101){
+            clearInterval(run);
+        }
+    }, 50);
+
+    </script>
+</body>
+</html>
