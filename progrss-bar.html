@@ -34,7 +34,8 @@
             box-shadow: 2px 0px 3px -5px #F2709C, 2px 0px 5px #FF9472;
         }
         h5{
-            /* opacity: 0; */
+            opacity: 0;
+            transition: .5s;
         }
         p{
             color: #d8d8d8;
@@ -53,8 +54,6 @@
     </div>
     <script>
     
-    
-    let counter = 0;
     let c = 0;
     let run = setInterval(function(){
         const h5 = document.querySelector('h5');
@@ -66,12 +65,12 @@
         
         if(c>=10){
             h5.innerHTML = c+'%';
+            h5.style.opacity='1';
         }
         
-        counter++;
         c++;
 
-        if(counter===101){
+        if(c===101){
             clearInterval(run);
         }
     }, 30);
