@@ -10,18 +10,20 @@
     <script>
 
         // 2. 333 012
-        // for (var i=0; i<3 ; i++){
-        //     setTimeout(function(){
-        //         console.log(i)
-        //     },1)
-        // };
-        // for (let i = 0; i < 3; i++) {
-        //     setTimeout(function(){
-        //         console.log(i)
-        //     },1);
-        // }
-        // Because of the event queue in JavaScript, the setTimeout callback function is called after the loop has been executed. Since the variable i in the first loop was declared using the var keyword, this value was global. During the loop, we incremented the value of i by 1 each time, using the unary operator ++. By the time the setTimeout callback function was invoked, i was equal to 3 in the first example.
-        // In the second loop, the variable i was declared using the let keyword: variables declared with the let (and const) keyword are block-scoped (a block is anything between { }). During each iteration, i will have a new value, and each value is scoped inside the loop.
+        for (var i = 0; i < 3; i++){
+            setTimeout(function(){
+                console.log(i)
+            },1)
+        };
+        for (let i = 0; i < 3; i++) {
+            setTimeout(function(){
+                console.log(i)
+            },1);
+        }
+        // var宣告在{}之外，此時為全域變數；
+        // for迴圈先跑，全域變數i在每一次的累加都會被保留下來
+        // 直到 i=3 的時候離開迴圈，此時全域變數 i=3
+        // setTimeout跑三次，都會抓到 i=3
 
 
         // 8. TypeError
@@ -39,9 +41,9 @@
  
 
         // 9. {}
-        // let greeting;
-        // greetign = {}; // Typo!
-        // console.log(greetign);
+        let greeting;
+        greetign = {}; // Typo!
+        console.log(greetign);
         // It logs the object, because we just created an empty object on the global object! When we mistyped greeting as greetign, the JS interpreter actually saw this as global.greetign = {} (or window.greetign = {} in a browser).
         // In order to avoid this, we can use "use strict". This makes sure that you have declared a variable before setting it equal to anything.
 
@@ -63,26 +65,33 @@
         console.log(number++);
         console.log(++number);
         console.log(number);
-        //The postfix unary operator ++:
-        // 2. Returns the value (this returns 0)Increments the value (number is now 1)
-        // The prefix unary operator ++:
-        // 2. Increments the value (number is now 2)Returns the value (this returns 2)
+        // The postfix unary operator ++:2. Returns the value (this returns 0) Increments the value (number is now 1)
+        // The prefix unary operator ++:2. Increments the value (number is now 2) Returns the value (this returns 2)
         // This returns 0 2 2.
 
 
-        // 17. 
-        function getPersonInfo(one, two, three) {
-            console.log(one);
-            console.log(two);
-            console.log(three);
+        // 17. Array["","is","years old"] , Lydia , 21
+        function getPersonInfo(str_array, person1, age1) {
+            console.log(str_array);
+            console.log(person1);
+            console.log(age1);
         }
-        const person = "Lydia";
-        const age = 21;
-        getPersonInfo`${person} is ${age} years old`;
-        // If you use tagged template literals, the value of the first argument is always an array of the string values. The remaining arguments get the values of the passed expressions!
+        const name1 = "Lydia";
+        const age1 = 21;
+        getPersonInfo`${name1} is ${age1} years old`;  // (["","is","years old"], ${person}, ${age})
+        // 標籤樣板字面值: 使用backtick包覆字串，並可帶入變數。
+        // 第一個參數接收的 array 為依照 ${} 的位置間格而成的字串
+        // 也可寫成: (...info spread展開會自動接收剩餘的參數)
+        function getPersonInfo(str_array, ...info) {
+            console.log(str_array);
+            console.log(...info);
+        }
+        const name2 = "Lydia";
+        const age2 = 21;
+        getPersonInfo`${name2} is ${age2} years old`;  // (["","is","years old"], ${person}, ${age})
 
 
-        // 18. 
+        // 18. Hmm.. You don't have an age I guess
         function checkAge(data) {
             if (data === { age: 18 }) {
                 console.log("You are an adult!");
@@ -93,27 +102,39 @@
             }
         }
         checkAge({ age: 18 });
-        // When testing equality, primitives are compared by their value, while objects are compared by their reference. JavaScript checks if the objects have a reference to the same location in memory.
+        // objective type 是 by reference 去處理 : string, number, boolean, null, undefined
+        // primitive type 是 by value 去處理 : object, function, array, set
+        // When testing equality, primitives(原始型別:by value 去處理) are compared by their value, while objects are compared by their reference. JavaScript checks if the objects have a reference to the same location in memory.
         // The two objects that we are comparing don't have that: the object we passed as a parameter refers to a different location in memory than the object we used in order to check equality.
         // This is why both { age: 18 } === { age: 18 } and { age: 18 } == { age: 18 } return false.
 
         
-        // 19.
-        function getAge(...args) {
+        // 19. object
+        function getAge1(...args) {
             console.log(typeof args);
+            console.log(...args);
+            console.log(args[0]);
+            console.log(args[1]);
+            console.log(args[2]);
         }
-        getAge(21);
+        getAge1(21,30,'hello');
+        // array is an object
         // The rest parameter (...args.) lets us "collect" all remaining arguments into an array. An array is an object, so typeof args returns "object"
 
 
-        // 20.
-        function getAge() {
-            "use strict";
-            age = 21;
+        // 20. age is not defined
+        function getAge2() {
+            // "use strict";
+            age = 50;
             console.log(age);
         }
-        getAge();
-        // With "use strict", you can make sure that you don't accidentally declare global variables. We never declared the variable age, and since we use "use strict", it will throw a reference error. If we didn't use "use strict", it would have worked, since the property age would have gotten added to the global object.
+        getAge2();
+        // "use strict" : 整支檔案使用
+        // "use strict" : 指定函式使用，如果加在函式裡的第一行，就只有這個函式套用了嚴格模式
+        // 一旦使用"use strict"，不允許直接定義未宣告變數
+        // With "use strict", you can make sure that you don't accidentally declare global variables. 
+        // We never declared the variable age, and since we use "use strict", it will throw a reference error. 
+        // If we didn't use "use strict", it would have worked, since the property age would have gotten added to the global object.
 
 
     </script>
