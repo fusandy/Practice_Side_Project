@@ -1,0 +1,68 @@
+body{
+    background-color: #8EC5FC;
+    background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+    box-sizing: border-box;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+.title{
+    font-size: 2rem;
+    text-align: center;
+    padding: 5%;
+}
+.name-card-wrap{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.name-card{
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding: 1% 1%;
+    /* width: 250px; */
+    /* height: 400px; */
+    box-shadow: 5px 5px 10px 2px #8f8797;
+    margin-left: 2%;
+    /* margin-right: .5rem; */
+    margin-bottom: 5%;
+}
+.picture{
+    border-radius: 50%;
+    overflow: hidden;
+    width: 60%;
+    height: auto;
+    box-shadow: 0 2px 10px 2px #8f8797;
+    margin: 0 auto;
+}
+.picture img{
+    width: 100%;
+    height: auto;
+    object-fit: fill;
+}
+.profile-info{
+    margin-top: 10%;
+    padding: 0% 5%;
+}
+.name{
+    display: flex;
+    align-items: center;
+}
+.first-name{
+    font-size: 1rem;
+}
+.last-name{
+    margin-left: 3%;
+    font-size: 1rem;
+}
+.country, .cellphone{
+    margin-top: 3%;
+    font-size: .8rem;
+}
+.email{
+    font-size: .8rem;
+}
+.email{
+    margin-top: 1%;
+}
+.fas{
+    color: rgb(58, 58, 58);
+}
