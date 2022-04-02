@@ -1,0 +1,17 @@
+.news-date-tag{
+    display: flex;
+    justify-content: space-between;
+}
+.pc-news-img{
+    width: 300px;
+}
+.pc-news-img img{
+    width: 100%;
+    object-fit: contain;
+}
+.mycontainer{
+    padding: 0 20%;
+}
+.pc-news-detail{
+    display: flex;
+}

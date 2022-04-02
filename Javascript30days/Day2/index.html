@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 2 JS&CSS Clock</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand second-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand hour-hand"></div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const second = document.querySelector(".second-hand");
+        const min = document.querySelector(".min-hand");
+        const hour = document.querySelector(".hour-hand");
+
+        function setClock() {
+          let time = new Date();
+          // 360度/60分鐘 => 6度/分鐘
+          // 分針一分鐘跑6度是漸進式的
+          // 時針每小時(30度)也是漸進式的
+
+          let secondDeg = time.getSeconds() * 6;
+          let minDeg = time.getMinutes() * 6 + (time.getSeconds() * 6) / 60;
+          let hourDeg = time.getHours() * 30 + (time.getMinutes() * 30) / 60;
+
+          second.style.transform = `rotate(${secondDeg}deg)`;
+          min.style.transform = `rotate(${minDeg}deg)`;
+          hour.style.transform = `rotate(${hourDeg}deg)`;
+        }
+
+        // 計時器 : setTimeout, setInterval, requestAnimationFrame
+
+        function timeoutHandler() {
+          setClock();
+          setTimeout(timeoutHandler, 1000); // 自己呼叫自己，使得可以連續執行
+        }
+
+        function animationHandler() {
+          setClock(); //初始化
+          window.requestAnimationFrame(animationHandler);
+        }
+
+        // setInterval(setClock,1000)  // 設定間隔，持續執行
+        // setTimeout(timeoutHandler, 1000)  // 設定延遲，執行一次
+        window.requestAnimationFrame(animationHandler);
+      })();
+    </script>
+  </body>
+</html>

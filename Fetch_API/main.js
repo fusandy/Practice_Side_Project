@@ -91,7 +91,6 @@ window.onload = function () {
                 <div class="country">${el.location.country}</div>
                 <div class="cellphone">${el.cell}</div>
                 <div class="email">
-                  <i class="fas fa-envelope"></i>
                   ${el.email}
                 </div>
               </div>
