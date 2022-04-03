@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 6 Type Ahead</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <form class="search-form">
+      <input type="text" class="search" placeholder="City or State" />
+      <ul class="suggestions">
+        <li>Filter for a city</li>
+        <li>or a state</li>
+      </ul>
+    </form>
+
+    <script>
+      const endpoint =
+        "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
+
+      const searchInput = document.querySelector(".search");
+      const suggestions = document.querySelector(".suggestions");
+
+      // [{
+      //     city: "New York"
+      //     growth_from_2000_to_2013: "4.8%"
+      //     latitude: 40.7127837
+      //     longitude: -74.0059413
+      //     population: "8405837"
+      //     rank: "1"
+      //     state: "New York"
+      // }]
+
+      // 傳統XMLHttpRequest : 傳統callback方式
+      //   function requestHandler() {
+      //     console.log(JSON.parse(this.response));
+      //   }
+
+      //   let req = new XMLHttpRequest();
+      //   req.addEventListener("load", requestHandler);
+      //   req.open("get", endpoint);
+      //   req.send();
+
+      // fetch : Promise方式
+      const cities = [];
+      fetch(endpoint)
+        .then((res) => res.json())
+        .then((data) => {
+          // ES6 解構新觀念
+          cities.push(...data);
+          console.log(cities);
+        });
+
+      //   let cities = null;
+      //   fetch(endpoint)
+      //     .then((res) => res.json())
+      //     .then((data) => (cities = data));
+
+      // pure function概念:
+      // 這裡只有傳入的wordToMatch, citites兩個參數，
+      // 透過function處理產生回傳新陣列，但不會改變function以外的東西
+      // 工具型函式
+      function findMatches(wordToMatch, cities) {
+        return cities.filter((place) => {
+          // g:global, i:不分大小寫
+          const regex = new RegExp(wordToMatch, "gi");
+          return place.city.match(regex) || place.state.match(regex);
+        });
+      }
+
+      function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+        // * 1 是將字串類型轉換為數字(因為fetch回來的資料population是字串...)
+        // return (x * 1).toLocaleString();
+      }
+
+      function inputHandler() {
+        // console.log(e.target.value);
+        const matchArray = findMatches(this.value, cities);
+        // console.log("matchArray:", matchArray);
+        // DOM處理
+        const html = matchArray
+          .map((place) => {
+            const regex = new RegExp(this.value, "gi");
+            const cityName = place.city.replace(
+              regex,
+              `<span class="hl">${this.value}</span>`
+            );
+            const stateName = place.state.replace(
+              regex,
+              `<span class="hl">${this.value}</span>`
+            );
+            return `
+                <li>
+                    <span class="name">${cityName}, ${stateName}</span>
+                    <span class="population">${numberWithCommas(
+                      place.population
+                    )}</span>
+                </li>
+            `;
+          })
+          .join("");
+        suggestions.innerHTML = html;
+      }
+
+      //   searchInput.addEventListener("change", changeHandler);
+      searchInput.addEventListener("keyup", inputHandler);
+    </script>
+  </body>
+</html>
