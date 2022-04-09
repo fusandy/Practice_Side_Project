@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 8 Fun with HTML5 Canvas</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      #draw {
+        border: 1px solid;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      //按住且滑動以後可以畫畫，放開之後停止畫畫
+      //   (function () {
+      let canvas = document.querySelector("#draw");
+      let ctx = canvas.getContext("2d");
+      // 變色變數
+      let colorDeg = 0;
+      let width = 50;
+      // 變化方向
+      let direction = -1;
+      // hsla的透明度作漸進
+      // let alpha = 1;
+      // let alphaDirection = 0.1;
+      // strokeStyle
+      // hsl(度數, 飽和度, 明亮度)
+      ctx.strokeStyle = `hsl(${colorDeg},100%,50%)`;
+      // 線寬
+      ctx.lineWidth = width;
+      // 線頭
+      ctx.lineCap = "round";
+      // 轉折角
+      ctx.lineJoin = "round";
+
+      let down = false,
+        drawing = false;
+      let x = 0,
+        y = 0;
+      canvas.addEventListener("mousedown", (e) => {
+        // 可以開始畫畫了
+        down = true;
+        [x, y] = [e.offsetX, e.offsetY];
+      });
+
+      canvas.addEventListener("mousemove", (e) => {
+        // 如果沒有mousedown，等於drawing=false，那就return離開這個函式
+        if (!down || !drawing) return;
+
+        // 宣布開始畫線
+        ctx.beginPath();
+        colorDeg = colorDeg < 360 ? colorDeg + 1 : 0;
+        ctx.strokeStyle = `hsl(${colorDeg},100%,50%)`;
+        // 畫筆粗細調整
+        if (width < 10 || width > 50) {
+          direction *= -1;
+        }
+        // 透明度漸進
+        //   if (alpha <= 0.3 || alpha >= 1) {
+        //     alphaDirection *= -1;
+        //   }
+        //   alpha += alphaDirection;
+        width += direction;
+        ctx.lineWidth = width;
+        // 從點下去的位置
+        ctx.moveTo(x, y);
+        // 移到現在e移動到的位置
+        ctx.lineTo(e.offsetX, e.offsetY);
+        [x, y] = [e.offsetX, e.offsetY];
+        // 畫線
+        ctx.stroke();
+      });
+
+      document.addEventListener("mouseup", () => {
+        // 停止畫畫
+        down = false;
+        // drawing = false;
+      });
+
+      // 偵測滑鼠是否脫離指定範圍
+      // 作法一: mouseout
+      // 差別在DOM的層級，當DOM的target在轉換時，mouseout會連續觸發
+      // canvas.addEventListener('mouseout',()=>{
+      // })
+      // 作法二: mouseleave
+      // 在這個範例DOM只有一層，所以mouseout與mouseleave的效果會是一樣的
+      canvas.addEventListener("mouseleave", () => {
+        // 停止畫畫
+        drawing = false;
+      });
+
+      canvas.addEventListener("mouseenter", (e) => {
+        drawing = true;
+        [x, y] = [e.offsetX, e.offsetY];
+      });
+      //   })();
+    </script>
+  </body>
+</html>
