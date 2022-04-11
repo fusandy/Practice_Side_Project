@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 9 Dev Tools Domination</title>
+    <style>
+      .green {
+        color: #bada55;
+        font-size: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+    <script>
+      const dogs = [
+        { name: "Snickers", age: 2 },
+        { name: "hugo", age: 8 },
+      ];
+
+      function makeGreen() {
+        const p = document.querySelector("p");
+        p.classList.toggle("green");
+      }
+
+      // 把console.log變成一個重複使用的物件工具
+      // 產品上線前，才不需要一個一個把console.log註解掉
+      let console = {
+        isDev: true,
+        log(...args) {
+          if (!this.isDev) return;
+          // %c 可以為console的內容加 style
+          window.console.log("%cMy console", "font-size:60px; color:red;");
+          window.console.log(...args);
+        },
+        warn(...args) {
+          window.console.warn(...args);
+        },
+        error(...args) {
+          window.console.error(...args);
+        },
+        info(...args) {
+          window.console.info(...args);
+        },
+        assert(...args) {
+          window.console.assert(...args);
+        },
+        dir(...args) {
+          if (!this.isDev) return;
+          window.console.dir(...args);
+        },
+        table(...args) {
+          if (!this.isDev) return;
+          window.console.table(...args);
+        },
+        count(...args) {
+          if (!this.isDev) return;
+          window.console.count(...args);
+        },
+        time(...args) {
+          if (!this.isDev) return;
+          window.console.time(...args);
+        },
+        timeEnd(...args) {
+          if (!this.isDev) return;
+          window.console.timeEnd(...args);
+        },
+      };
+
+      // Regular
+      console.log(123, 456);
+
+      // Interpolated
+      // %s = string, %f = 浮點數, %d = 整數
+      console.log("My name is %s!!!!", "Sandy");
+      console.log("I have %f dollars!", 3.45);
+      console.log("I have %d dollars!", 3.45);
+
+      // Styled
+      // %c
+
+      // warning!
+      console.warn("Warning!");
+
+      // Error :|
+      console.error("Errorrrrrrrrr!");
+
+      // Info
+      console.info("跟Log有差嗎 ");
+
+      // Testing
+      // assert像是一個條件(條件,'訊息')，條件沒通過就噴錯誤訊息
+      console.assert(true, "MSG1");
+      console.assert(false, "MSG2");
+      console.assert("", "MSG3");
+      console.assert(0, "MSG4");
+      console.assert(NaN, "MSG5");
+      console.assert(null, "MSG6");
+      console.assert(undefined, "MSG7");
+
+      // clearing
+      // ctrl + L = 清除console.log results
+
+      // Viewing DOM Elements
+      let p = document.querySelector("p");
+      console.log(p);
+      console.log(dogs);
+      // console.dir() = 把目錄展開,這個物件的功能展開
+      console.dir(p);
+      window.console.dir(console);
+
+      // Grouping together
+      console.table(dogs);
+      // 可以作篩選想看的表格欄位
+      console.table(dogs, ["name"]);
+
+      // counting
+      // 印了同個東西幾次，會計數
+      console.count("Wes");
+      console.count("Wes");
+      console.count("Steve");
+      console.count("Steve");
+      console.count("Wes");
+      console.count("Steve");
+      console.count("Wes");
+      console.count("Steve");
+      console.count("Steve");
+      console.count("Steve");
+      console.count("Steve");
+      console.count("Steve");
+
+      // timing
+      // 測試執行一段動作要花多少時間
+      // block scope 封裝
+      console.time("test1");
+      let i;
+      let j;
+      for (i = 1; i < 1000000; i++) {
+        j = i;
+      }
+      console.timeEnd("test1");
+
+      // 區域變數與全域相比，明顯快很多
+      console.time("test2");
+      for (let i = 1; i < 1000000; i++) {
+        let j = i;
+      }
+      console.timeEnd("test2");
+
+      // 封裝後，跟test1全域變數相比，明顯快很多
+      {
+        console.time("test3");
+        let i;
+        let j;
+        for (i = 1; i < 1000000; i++) {
+          j = i;
+        }
+        console.timeEnd("test3");
+      }
+    </script>
+  </body>
+</html>
