@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 12 Key Sequence Detection</title>
+    <script
+      type="text/javascript"
+      src="https://www.cornify.com/js/cornify.js"
+    ></script>
+  </head>
+  <body>
+    <script>
+      // 鍵盤序列偵測
+      // array
+
+      // using keyCode to compare secretCode and user's input two arrays.
+      // keyCode: up up down down left right left right b a
+      const secretCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+      // user's input
+      const input = [];
+
+      window.addEventListener("keyup", function (e) {
+        // console.log(e.key, e.keyCode);
+        input.push(e.keyCode);
+
+        input.splice(-secretCode.length - 1, input.length - secretCode.length);
+        // (起始位置，切幾個) secretCode.length=10, 所以-11相對於index=0, 而第二個參數要為正數才會切
+        // 1    (-11, -9)
+        // 2    (-11, -8)
+        // .
+        // .
+        // 10   (-11, 0)
+        // 11   (-11, 1)
+        if (input.join(",") === secretCode.join(",")) {
+          console.log("KONAMI");
+          cornify.add();
+        }
+      });
+    </script>
+  </body>
+</html>
