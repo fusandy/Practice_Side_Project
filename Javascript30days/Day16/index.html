@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 16 Mouse Move Shadow</title>
+    <style>
+      html {
+        color: black;
+        font-family: sans-serif;
+      }
+      body {
+        margin: 0;
+      }
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+      }
+      h1 {
+        text-shadow: 10px 10px 0 rgba(0, 0, 0, 1);
+        font-size: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hero">
+      <h1 contenteditable>🔥WOAH!</h1>
+    </div>
+
+    <script>
+      // clientX, clientY 頁面
+      // offsetX, offsetY DOM區塊
+
+      (function () {
+        // 假設陰影位移100
+        let length = 300;
+        let text = document.querySelector("h1");
+        document
+          .querySelector(".hero")
+          .addEventListener("mousemove", function (e) {
+            // console.log(e);
+            // old school
+            // let x = e.offsetX;
+            // let y = e.offsetY;
+
+            // new school
+            // 解構滑鼠座標
+            let { offsetX, offsetY } = e;
+
+            // 滑鼠事件的 e.target 是否等於 hero div
+            if (e.target !== this) {
+              // 如果 this.target 不是hero，那就得把e.target的offsetX, offsetY加回去
+              // 如此與 this.offsetWidth, this.offsetHeight 計算比例才正確
+              offsetX += e.target.offsetLeft;
+              offsetY += e.target.offsetTop;
+            }
+
+            let lengthX =
+              Math.floor((offsetX / this.offsetWidth) * length) * 2 - length;
+            let lengthY =
+              Math.floor((offsetY / this.offsetHeight) * length) * 2 - length;
+
+            text.style.textShadow = `
+            ${lengthX * -0.3}px ${lengthY * -0.3}px 5px rgba(255,0,0,0.6),
+            ${lengthX * -0.6}px ${lengthY * -0.6}px 5px rgba(0,255,0,0.6),
+            ${lengthX * -1}px ${lengthY * -1}px 5px rgba(0,0,255,0.6)`;
+            // new new school
+            // let { offsetX: x, offsetY: y } = e;
+          });
+      })();
+    </script>
+  </body>
+</html>
