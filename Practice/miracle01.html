@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS</title>
+    <style>
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      .container {
+        width: 100%;
+        padding: 2% 20%;
+      }
+      h1,
+      h2,
+      section {
+        display: flex;
+      }
+      h1,
+      h2 {
+        justify-content: center;
+      }
+      section {
+        justify-content: space-evenly;
+        margin-top: 10%;
+      }
+      .rect {
+        width: 180px;
+        height: 200px;
+        background: rgb(193, 190, 190);
+        position: relative;
+      }
+      .circle {
+        width: 80px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: rgb(249, 166, 180);
+        border: 1px solid black;
+        position: absolute;
+        top: -40px;
+        left: calc(90px - 40px);
+      }
+      p {
+        text-align: center;
+        font-weight: 600;
+      }
+      @media screen and (min-width: 577px) and (max-width: 992px) {
+        .container {
+          padding: 2% 0;
+        }
+        section {
+          margin-top: 10%;
+        }
+      }
+      @media screen and (max-width: 576px) {
+        .container {
+          padding: 2% 0;
+        }
+        section {
+          display: block;
+          margin-top: 10%;
+        }
+        .card {
+          margin: 15% 0;
+          position: relative;
+        }
+        .rect {
+          margin: 0 auto;
+        }
+        .circle {
+          position: absolute;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Title</h1>
+      <h2>this is subtitle</h2>
+      <section>
+        <div class="card">
+          <div class="rect">
+            <div class="circle"></div>
+          </div>
+          <p>title</p>
+        </div>
+        <div class="card">
+          <div class="rect">
+            <div class="circle"></div>
+          </div>
+          <p>title</p>
+        </div>
+        <div class="card">
+          <div class="rect">
+            <div class="circle"></div>
+          </div>
+          <p>title</p>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
