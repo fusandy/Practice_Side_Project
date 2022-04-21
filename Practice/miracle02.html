@@ -8,6 +8,7 @@
   </head>
   <body>
     <script>
+      // leetcode 674
       // 給一個未排序的 array，請回傳「最大連續遞增數列」的長度。遞增必須是嚴格遞增
       const checkLength = function (nums) {
         if (nums.length == 0) return 0;
@@ -25,8 +26,36 @@
         return maxLength;
       };
 
-      let arr = [1,2,2,3];
+      let arr = [1, 2, 2, 3];
       console.log(checkLength(arr));
+
+      // leetcode 520
+      // "USA" "leetcode" "Google" 符合這三個條件 output=true
+      const detectCapitalUse = function (word) {
+        let capitalCount = 0;
+
+        for (let i = 0; i < word.length; i++) {
+          const letter = word[i];
+          if (letter === letter.toUpperCase()) {
+            capitalCount++;
+          }
+        }
+
+        if (
+          capitalCount === word.length ||
+          capitalCount === 0 ||
+          (word[0] === word[0].toUpperCase() && capitalCount === 1)
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      console.log("ABC:", detectCapitalUse("ABC"));
+      console.log("abc:", detectCapitalUse("abc"));
+      console.log("Abc:", detectCapitalUse("Abc"));
+      console.log("AbC:", detectCapitalUse("AbC"));
     </script>
   </body>
 </html>
