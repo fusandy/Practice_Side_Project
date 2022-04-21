@@ -51,9 +51,12 @@
             // 解構滑鼠座標
             let { offsetX, offsetY } = e;
 
+            // new new school
+            // let { offsetX: x, offsetY: y } = e;
+
             // 滑鼠事件的 e.target 是否等於 hero div
             if (e.target !== this) {
-              // 如果 this.target 不是hero，那就得把e.target的offsetX, offsetY加回去
+              // 如果e.target不是hero(currentTarget)，那就得把e.target的offsetLeft, offsetTop加回去
               // 如此與 this.offsetWidth, this.offsetHeight 計算比例才正確
               offsetX += e.target.offsetLeft;
               offsetY += e.target.offsetTop;
@@ -68,8 +71,6 @@
             ${lengthX * -0.3}px ${lengthY * -0.3}px 5px rgba(255,0,0,0.6),
             ${lengthX * -0.6}px ${lengthY * -0.6}px 5px rgba(0,255,0,0.6),
             ${lengthX * -1}px ${lengthY * -1}px 5px rgba(0,0,255,0.6)`;
-            // new new school
-            // let { offsetX: x, offsetY: y } = e;
           });
       })();
     </script>
