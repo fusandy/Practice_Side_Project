@@ -127,6 +127,7 @@
           });
       }
 
+      // 將影像畫在canvas畫布上
       function paintToCanvas() {
         const width = video.videoWidth;
         const height = video.videoHeight;
@@ -167,7 +168,8 @@
         snap.currentTime = 0;
         snap.play();
 
-        const data = canvas.toDataURL("image/jpeg"); // 把canvas轉成base64
+        // 把canvas轉成base64
+        const data = canvas.toDataURL("image/jpeg"); 
         const link = document.createElement("a");
         link.href = data;
         // setAttribute : download屬性會讓電腦存圖的時候預設開啟"下載"的資料夾
