@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 23 Speech Synthesis</title>
+    <style>
+      html {
+        font-size: 10px;
+        box-sizing: border-box;
+      }
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background-color: #3bc1ac;
+        display: flex;
+        min-height: 100vh;
+        align-items: center;
+        background-image: radial-gradient(
+            circle at 100% 150%,
+            #3bc1ac 24%,
+            #42d2bb 25%,
+            #42d2bb 28%,
+            #3bc1ac 29%,
+            #3bc1ac 36%,
+            #42d2bb 36%,
+            #42d2bb 40%,
+            transparent 40%,
+            transparent
+          ),
+          radial-gradient(
+            circle at 0 150%,
+            #3bc1ac 24%,
+            #42d2bb 25%,
+            #42d2bb 28%,
+            #3bc1ac 29%,
+            #3bc1ac 36%,
+            #42d2bb 36%,
+            #42d2bb 40%,
+            transparent 40%,
+            transparent
+          ),
+          radial-gradient(
+            circle at 50% 100%,
+            #42d2bb 10%,
+            #3bc1ac 11%,
+            #3bc1ac 23%,
+            #42d2bb 24%,
+            #42d2bb 30%,
+            #3bc1ac 31%,
+            #3bc1ac 43%,
+            #42d2bb 44%,
+            #42d2bb 50%,
+            #3bc1ac 51%,
+            #3bc1ac 63%,
+            #42d2bb 64%,
+            #42d2bb 71%,
+            transparent 71%,
+            transparent
+          ),
+          radial-gradient(
+            circle at 100% 50%,
+            #42d2bb 5%,
+            #3bc1ac 6%,
+            #3bc1ac 15%,
+            #42d2bb 16%,
+            #42d2bb 20%,
+            #3bc1ac 21%,
+            #3bc1ac 30%,
+            #42d2bb 31%,
+            #42d2bb 35%,
+            #3bc1ac 36%,
+            #3bc1ac 45%,
+            #42d2bb 46%,
+            #42d2bb 49%,
+            transparent 50%,
+            transparent
+          ),
+          radial-gradient(
+            circle at 0 50%,
+            #42d2bb 5%,
+            #3bc1ac 6%,
+            #3bc1ac 15%,
+            #42d2bb 16%,
+            #42d2bb 20%,
+            #3bc1ac 21%,
+            #3bc1ac 30%,
+            #42d2bb 31%,
+            #42d2bb 35%,
+            #3bc1ac 36%,
+            #3bc1ac 45%,
+            #42d2bb 46%,
+            #42d2bb 49%,
+            transparent 50%,
+            transparent
+          );
+        background-size: 100px 50px;
+      }
+      .voiceinator {
+        padding: 2rem;
+        width: 50rem;
+        margin: 0 auto;
+        border-radius: 1rem;
+        position: relative;
+        background: white;
+        overflow: hidden;
+        z-index: 1;
+        box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        width: calc(100% + 4rem);
+        margin: -2rem 0 2rem -2rem;
+        padding: 0.5rem;
+        background: #ffc600;
+        border-bottom: 5px solid #f3c010;
+        text-align: center;
+        font-size: 5rem;
+        font-weight: 100;
+        font-family: "Pacifico", cursive;
+        text-shadow: 3px 3px 0 #f3c010;
+      }
+      .voiceinator input,
+      .voiceinator button,
+      .voiceinator select,
+      .voiceinator textarea {
+        width: 100%;
+        display: block;
+        margin: 10px 0;
+        padding: 10px;
+        border: 0;
+        font-size: 2rem;
+        background: #f7f7f7;
+        outline: 0;
+      }
+      textarea {
+        height: 20rem;
+      }
+      .voiceinator button {
+        background: #ffc600;
+        border: 0;
+        width: 49%;
+        float: left;
+        font-family: "Pacifico", cursive;
+        margin-bottom: 0;
+        font-size: 2rem;
+        border-bottom: 5px solid #f3c010;
+        cursor: pointer;
+        position: relative;
+      }
+      .voiceinator button:active {
+        top: 2px;
+      }
+      .voiceinator button:nth-of-type(1) {
+        margin-right: 2%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="voiceinator">
+      <h1>The Voiceinator 5000</h1>
+      <select name="voice" id="voices">
+        <option value="">Select A Voice</option>
+      </select>
+
+      <label for="rate">Rate:</label>
+      <input name="rate" type="range" min="0" max="3" value="1" step="0.1" />
+      <label for="pitch">Pitch:</label>
+      <input name="pitch" type="range" min="0" max="2" step="0.1" />
+      <label for="volume">Volume:</label>
+      <input name="volume" type="range" min="0" max="2" step="0.1" />
+
+      <textarea name="text">哈囉 大家好 你你你你你你你是誰?</textarea>
+
+      <button id="stop">Stop!</button>
+      <button id="speak">Speak</button>
+    </div>
+
+    <script>
+      // SpeechSynthesisUtterance為一個語音發生需求，new出一個物件
+      // utterance物件的properties: lang, pitch, rate, text, voice, volume
+      const utterance = new SpeechSynthesisUtterance();
+      // Gets and sets the text that will be synthesized when the utterance is spoken.
+      utterance.text = document.querySelector('[name="text"]').value;
+
+      let voices = [];
+      const voicesDropdown = document.querySelector('[name="voice"]');
+      // 多種input共用addEventListener, 且又能用迴圈對應到utterance的物件屬性
+      const options = document.querySelectorAll(
+        '[type="range"], [name="text"]'
+      );
+
+      const speakButton = document.querySelector("#speak");
+      const stopButton = document.querySelector("#stop");
+
+      // 產生下拉式語言選單
+      function populateVoices() {
+        // voicechanged的話，利用getVoice()methods回傳一個目前裝置上可使用的聲音物件
+        voices = this.getVoices();
+        console.log(voices);
+        voicesDropdown.innerHTML = voices
+          //   .filter((voice) => voice.lang.includes("zh-TW"))
+          .map(
+            (voice) =>
+              `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`
+          )
+          .join("");
+      }
+
+      function setVoice() {
+        // SpeechSynthesisUtterance.voice : Gets and sets the voice that will be used to speak the utterance.
+        utterance.voice = voices.find((voice) => voice.name === this.value);
+        playSound();
+      }
+
+      function playSound() {
+        // 先停止原本在進行的speechSynthesis
+        stopSound();
+        speechSynthesis.speak(utterance);
+      }
+
+      function stopSound() {
+        speechSynthesis.cancel();
+      }
+
+      function setOption() {
+        console.log(this.name, this.value);
+        utterance[this.name] = this.value;
+        console.log(utterance);
+        // playSound();
+      }
+
+      // speechSynthesis為windows底下的功能，用來判斷裝置上可支援的語音功能
+      speechSynthesis.addEventListener("voiceschanged", populateVoices);
+
+      // 語言下拉更換時，要重新設定
+      voicesDropdown.addEventListener("change", setVoice);
+
+      // SpeechSynthesisUtterance的rate與pitch調整
+      options.forEach((option) => option.addEventListener("change", setOption));
+
+      speakButton.addEventListener("click", playSound);
+      stopButton.addEventListener("click", stopSound);
+    </script>
+  </body>
+</html>
